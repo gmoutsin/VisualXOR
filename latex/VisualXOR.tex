@@ -1,0 +1,924 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{mathtools}
+% \usepackage{morefloats}
+
+\usepackage[hidelinks]{hyperref}
+\usepackage[
+    type={CC},
+    modifier={by-nc-sa},
+    version={3.0},
+]{doclicense}
+
+\pdfsuppresswarningpagegroup=1 
+
+%opening
+\title{Visual One-Time Pad Encryption}
+\author{Giannis Moutsinas}
+
+% \pagenumbering{gobble}
+
+\setlength\parindent{0pt}
+\setlength\parskip{1em}
+
+\newcommand{\pxWhite}{
+ {\mathchoice
+  {\includegraphics[height=1.6ex]{pics/PixelWhite}}
+  {\includegraphics[height=1.6ex]{pics/PixelWhite}}
+  {\includegraphics[height=1.2ex]{pics/PixelWhite}}
+  {\includegraphics[height=0.9ex]{pics/PixelWhite}}
+ }
+}
+
+\newcommand{\pxDGrey}{
+ {\mathchoice
+  {\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=1.2ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=0.9ex]{pics/PixelDarkGrey}}
+ }
+}
+
+\newcommand{\LL}{\mathord{\includegraphics[height=1.6ex]{pics/L}}}
+\newcommand{\RR}{\mathord{\includegraphics[height=1.6ex]{pics/R}}}
+\newcommand{\BB}{\mathord{\includegraphics[height=1.6ex]{pics/B}}}
+
+% \newcommand{\pxWhite}{\mathord{\includegraphics[height=1.6ex]{pics/PixelWhite}}}
+\newcommand{\pxBlack}{\mathord{\includegraphics[height=1.6ex]{pics/PixelBlack}}}
+\newcommand{\pxLGrey}{\mathord{\includegraphics[height=1.6ex]{pics/PixelLightGrey}}}
+% \newcommand{\pxDGrey}{\mathord{\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}}
+
+\newcommand{\smKeyGrey}{\mathord{\includegraphics[height=10ex]{pics/smallKeyGrey}}}
+\newcommand{\smMesGrey}{\mathord{\includegraphics[height=10ex]{pics/smallPlaintextGrey}}}
+\newcommand{\smCyphGrey}{\mathord{\includegraphics[height=10ex]{pics/smallCyphertextGrey}}}
+
+\newcommand{\smKeyBlack}{\mathord{\includegraphics[height=10ex]{pics/smallKeyBlack}}}
+\newcommand{\smMesBlack}{\mathord{\includegraphics[height=10ex]{pics/smallPlaintextBlack}}}
+\newcommand{\smCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/smallCyphertextBlack}}}
+
+\newcommand{\smXORmesGrey}{\mathord{\includegraphics[height=10ex]{pics/smallXOR_Key_Cypher_Grey}}}
+\newcommand{\smXORcyphGrey}{\mathord{\includegraphics[height=10ex]{pics/smallXOR_Key_Text_Grey}}}
+
+
+\newcommand{\smUpKeyBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyBlack}}}
+\newcommand{\smUpMesBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextBlack}}}
+\newcommand{\smUpCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextBlack}}}
+
+
+\newcommand{\smUpKeyColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyColored}}}
+\newcommand{\smUpMesColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextColored}}}
+\newcommand{\smUpCyphColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextColored}}}
+
+
+\newcommand{\smUpKeyOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyOverlay}}}
+\newcommand{\smUpMesOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextOverlay}}}
+\newcommand{\smUpCyphOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextOverlay}}}
+
+
+\newcommand{\smUpXorCyphColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorCyphertextColored}}}
+\newcommand{\smUpXorMesColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorPlaintextColored}}}
+\newcommand{\smUpXorCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorCyphertextBlack}}}
+\newcommand{\smUpXorMesBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorPlaintextBlack}}}
+
+
+
+\newcommand{\exampleCyphertext}{\mathord{\includegraphics[height=21ex]{pics/exampleCyphertext}}}
+\newcommand{\exampleCyphertextUp}{\mathord{\includegraphics[height=21ex]{pics/exampleCyphertextUp}}}
+\newcommand{\exampleKey}{\mathord{\includegraphics[height=21ex]{pics/exampleKey}}}
+\newcommand{\exampleKeyUp}{\mathord{\includegraphics[height=21ex]{pics/exampleKeyUp}}}
+\newcommand{\examplePlaintext}{\mathord{\includegraphics[height=21ex]{pics/examplePlaintext}}}
+\newcommand{\examplePlaintextUp}{\mathord{\includegraphics[height=21ex]{pics/examplePlaintextUp}}}
+\newcommand{\exampleXorCyphertext}{\mathord{\includegraphics[height=21ex]{pics/exampleXorCyphertext}}}
+\newcommand{\exampleXorPlaintext}{\mathord{\includegraphics[height=21ex]{pics/exampleXorPlaintext}}}
+
+
+
+
+\newcommand{\exampleBadCyphertext}{\mathord{\includegraphics[height=21ex]{pics/exampleBadCyphertext}}}
+\newcommand{\exampleBadCyphertextUp}{\mathord{\includegraphics[height=21ex]{pics/exampleBadCyphertextUp}}}
+\newcommand{\exampleBadKey}{\mathord{\includegraphics[height=21ex]{pics/exampleBadKey}}}
+\newcommand{\exampleBadKeyUp}{\mathord{\includegraphics[height=21ex]{pics/exampleBadKeyUp}}}
+\newcommand{\exampleBadXorCyphertext}{\mathord{\includegraphics[height=21ex]{pics/exampleBadXorPlaintext}}}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+
+\begin{abstract}
+ This is activity demonstrates how one-time pad encryption works, why it cannot be broken and why each key can only be used once.
+\end{abstract}
+
+\vfill
+
+\doclicenseThis
+
+\newpage
+
+\section{One-time pad}
+
+\subsection{XOR operation}
+
+The name XOR means \textit{exclusive or} and it is a notion that comes from Boolean algebra. It is an operator that takes one binary digit (which is either 0 or 1) and returns a binary digit obeying the following rule:
+\begin{align*}
+0+0=0\\
+1+0=1\\
+0+1=1\\
+1+1=0
+\end{align*}
+
+One useful property of XOR is that if we add the same digit twice we always get the our initial digit:
+\begin{equation*}
+(a+b)+b=a
+\end{equation*}
+for any $a$ and $b$.
+
+\subsection{XOR encryption}
+
+We can use XOR to encrypt a sequence of binary digits in a straightforward way, we just XOR with an other sequence, which we call \textit{key}. In order to decrypt it we just XOR it again with the same key and we get the initial sequence back.
+
+For example let's encrypt the sequence $11001100110011001100$ with our key that we choose to be the sequence $11110100100101011001$:
+\begin{equation*}
+\begin{array}{rl}
+  & 1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\\
++ & 1\,1\,1\,1\,0\,1\,0\,0\,1\,0\,0\,1\,0\,1\,0\,1\,1\,0\,0\,1\\ \hline
+= & 0\,0\,1\,1\,1\,0\,1\,0\,0\,1\,0\,1\,1\,0\,0\,1\,0\,1\,0\,1
+\end{array}
+\end{equation*}
+
+The result of this operation is called cyphertext. Notice that even though the original sequence has a nice pattern, the cyphertext does not have it. This is an essential property, but it will be demonstrated better later. Now we can XOR the cyphertext with the same key and we get back the original message:
+\begin{equation*}
+\begin{array}{rl}
+  & 0\,0\,1\,1\,1\,0\,1\,0\,0\,1\,0\,1\,1\,0\,0\,1\,0\,1\,0\,1 \\
++ & 1\,1\,1\,1\,0\,1\,0\,0\,1\,0\,0\,1\,0\,1\,0\,1\,1\,0\,0\,1\\ \hline
+= & 1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0
+\end{array}
+\end{equation*}
+
+\section{Visual XOR}
+
+We want to have a way to perform XOR visually by overlaying a printed transparencies. Our message will be a low resolution black and white (no grey) picture. A black pixel will be represented by 1 and a white pixel will be represented by 0. With this in mind XOR obeys the rule:
+\begin{align*}
+ \pxWhite+\pxWhite=\pxWhite \\
+ \pxWhite+\pxBlack=\pxBlack \\
+ \pxBlack+\pxWhite=\pxBlack \\
+ \pxBlack+\pxBlack=\pxWhite
+\end{align*}
+With this rule we can encrypt and decrypt black and white pictures, but not in a visual way.
+
+
+% {\Huge
+% \begin{align*}
+%  \LL+\LL=\LL\\
+%  \RR+\RR=\RR\\
+%  \LL+\RR=\BB\\
+%  \RR+\LL=\BB
+% \end{align*}
+% }
+
+\subsection{The inconvenient way}
+
+The obvious thing to try is to turn a black pixel to a light grey pixel ($\pxBlack \mapsto \pxLGrey$) and then overlay the two pictures. The result will have 3 different pixels: white ($\pxWhite$), light grey ($\pxLGrey$) and dark grey ($\pxDGrey$). Then we change the light grey pixel to black ($ \pxLGrey \mapsto \pxBlack $) and the dark grey pixel to white ($ \pxDGrey \mapsto \pxWhite $). The following table summarizes this:
+\begin{equation*}
+\begin{array}{ccccccccccc}
+&&&&&&&&& \pxLGrey \mapsto \pxBlack & \\ 
+&&& \pxBlack \mapsto \pxLGrey &&&&&& \pxDGrey \mapsto \pxWhite & \\ \hline
+\vspace{-0.5em}&&&&&&&&&& \\
+\pxWhite & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \pxWhite & + & \pxWhite &  \Longrightarrow & \pxWhite & \xRightarrow{\hspace*{3em}} & \pxWhite \\
+\pxWhite & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \pxWhite & + & \pxLGrey &  \Longrightarrow & \pxLGrey & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \pxLGrey & + & \pxWhite &  \Longrightarrow & \pxLGrey & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \pxLGrey & + & \pxLGrey &  \Longrightarrow & \pxDGrey & \xRightarrow{\hspace*{3em}} & \pxWhite
+\end{array}
+\end{equation*}
+
+Let's do this for pictures with $4\times4$ pixels. We choose our message to be:
+$$ \smMesBlack $$
+and our key to be:
+$$ \smKeyBlack $$
+
+In order to encrypt the message we need to do the following:
+\begin{equation*}
+\begin{array}{ccccccc}
+\smMesBlack \vspace{0.5em} && \smKeyBlack \vspace{0.5em}&&&& \smCyphBlack \vspace{0.5em}\\
+\Downarrow\vspace{0.5em}&&\Downarrow\vspace{0.5em}&&&& \Uparrow\vspace{0.5em}  \\
+\smMesGrey & \raisebox{4ex}{+} & \smKeyGrey & \raisebox{4ex}{=} & \smXORmesGrey & \raisebox{4ex}{$\overset{\pxDGrey\;\mapsto\;\pxWhite}{\xRightarrow{\hspace*{3em}}}$} & \smCyphGrey
+\end{array}
+\end{equation*}
+
+We can do the same with the cyphertext and we get back the original message:
+\begin{equation*}
+\begin{array}{ccccccc}
+\smCyphBlack \vspace{0.5em} && \smKeyBlack \vspace{0.5em}&&&& \smMesBlack \vspace{0.5em}\\
+\Downarrow\vspace{0.5em}&&\Downarrow\vspace{0.5em}&&&& \Uparrow\vspace{0.5em}  \\
+\smCyphGrey & \raisebox{4ex}{+} & \smKeyGrey & \raisebox{4ex}{=} & \smXORcyphGrey & \raisebox{4ex}{$\overset{\pxDGrey\;\mapsto\;\pxWhite}{\xRightarrow{\hspace*{3em}}}$} & \smMesGrey
+\end{array}
+\end{equation*}
+
+The problem with this method is that even though in the result a dark grey pixel ($\pxDGrey$) and a white pixel ($\pxWhite$) represent 0 in the result, they are visually very different. But we can do better.
+
+
+\subsection{The convenient way}
+
+We split each pixel of the original picture into 4 and we color them by the rule:
+\begin{equation*}
+\pxWhite \mapsto \LL \quad\text{ and }\quad \pxBlack \mapsto \RR.
+\end{equation*}
+We overlay the two pictures and we have a picture with 3 kinds of pixels: left diagonal ($\LL$), right diagonal ($\RR$) and black ($\BB$). Finally we change change diagonal pixels to white:
+\begin{equation*}
+\LL \mapsto \pxWhite \quad\text{ and }\quad \RR \mapsto \pxWhite.
+\end{equation*}
+This procedure is summarized in the following table:
+\begin{equation*}
+\begin{array}{ccccccccccc}
+&&& \pxWhite \mapsto \LL &&&&&& \RR \mapsto \pxWhite & \\
+&&& \pxBlack \mapsto \RR &&&&&& \LL \mapsto \pxWhite & \\ \hline
+\vspace{-0.5em}&&&&&&&&&& \\
+\pxWhite & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \LL & + & \LL &  \Longrightarrow & \LL & \xRightarrow{\hspace*{3em}} & \pxWhite \\
+\pxWhite & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \LL & + & \RR &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \RR & + & \LL &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \RR & + & \RR &  \Longrightarrow & \RR & \xRightarrow{\hspace*{3em}} & \pxWhite
+\end{array}
+\end{equation*}
+
+Now we can repeat the previous encryption. Following the new rule our key, message and cyphertext become:
+\begin{equation*}
+\begin{array}{ccccc}
+\smKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyBlack \vspace{0.5em}\\
+\smMesBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpMesOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpMesBlack \vspace{0.5em} \\
+\smCyphBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphBlack
+\end{array}
+\end{equation*}
+
+The encryption sequence is:
+\begin{equation*}
+\begin{array}{ccccc}
+\smMesBlack &  & \smKeyBlack & & \smCyphBlack \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpMesBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesBlack \vspace{0.5em} \\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpMesColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesColored
+\end{array}
+\end{equation*}
+
+The decryption sequence is:
+\begin{equation*}
+\begin{array}{ccccc}
+\smCyphBlack  &  & \smKeyBlack & & \smMesBlack \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpCyphBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpXorCyphBlack \vspace{0.5em} \\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpCyphColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{$\Rightarrow$} & \smUpXorCyphColored
+\end{array}
+\end{equation*}
+
+The advantage of this method is that the pixels which represent 0 are $\LL$ and $\RR$, which are not very different visually. On the other hand 1 is represented by $\BB$ as expected. This means that we can omit the last stem and still see the pattern of the picture. This becomes apparent with bigger pictures.
+
+Let's choose a picture of $50\times50$ pixels as our message:
+\begin{equation*}
+\examplePlaintext
+\end{equation*}
+and let our key be:
+\begin{equation*}
+\exampleKey
+\end{equation*}
+Now we can encrypt the message exactly as before:
+\begin{equation*}
+\begin{array}{ccccc}
+\examplePlaintext &  & \exampleKey & & \exampleCyphertext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\examplePlaintextUp & \raisebox{10ex}{+} & \exampleKeyUp & \raisebox{10ex}{$\Rightarrow$} & \exampleXorPlaintext
+\end{array}
+\end{equation*}
+We see that the cyphertext both before and after the final clean-up does not exhibit any pattern similar to our message.
+
+In order to decrypt we do the same:
+\begin{equation*}
+\begin{array}{ccccc}
+\exampleCyphertext & & \exampleKey & & \examplePlaintext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\exampleCyphertextUp & \raisebox{10ex}{+} & \exampleKeyUp & \raisebox{10ex}{$\Rightarrow$} & \exampleXorCyphertext
+\end{array}
+\end{equation*}
+Notice that both before and after the final clean-up the message is clearly visible.
+
+The strength of the encryption depends on the choice of the key. If we choose a key with a very easy pattern, we will get a weak encryption. For example let's repeat the above with the key:
+\begin{equation*}
+\exampleBadKey
+\end{equation*}
+
+Our encryption gives:
+\begin{equation*}
+\begin{array}{ccccc}
+\examplePlaintext &  & \exampleBadKey & & \exampleBadCyphertext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\examplePlaintextUp & \raisebox{10ex}{+} & \exampleBadKeyUp & \raisebox{10ex}{$\Rightarrow$} & \exampleBadXorCyphertext
+\end{array}
+\end{equation*}
+Because the cyphertext has a clear pattern, it becomes much easier to guess the message. Can you guess now why this method is called one-time pad?
+
+\newpage
+
+\section{Activity}
+
+\subsection{Preparation}
+
+Print everything up to and including page \pageref{pg_last_paper_printed} to paper. The last 5 pages should be print to transparencies at least twice. It is better if you have at 3 or 4 copies of each transparency. These pages depict the cyphertext. Pages \pageref{pg_key_1} and \pageref{pg_key_2} depict the decryption key. 
+
+
+There are 5 plaintext messages that have been encrypted, their plaintext pictures can be seen in pages \pageref{pg_circle}, \pageref{pg_cross}, \pageref{pg_square} \pageref{pg_triangle} and \pageref{pg_X}.
+
+Overlay the transparencies with the key and separate the transparencies by the picture they decrypt. Put each group of transparencies in a folder and then add the corresponding picture on top. You should have 5 folders with the 5 possible plaintext images. Put the two pages with the key into a separate folder.
+
+The pages \pageref{pg_BF_keys_start}-\pageref{pg_BF_keys_finish} depict the ``brute force keys'' and should be set aside.
+
+\subsection{Action plan}
+
+Pick one participant to play the role of Alice and another participant to play the role of Bob. Everyone else plays the role of Eve. Alice gets the 5 folders with the cyphertexts and the 2 keys, then Alice goes to a corner of the room.
+
+Bob goes to Alice and gets one of the 2 keys. Then Bob goes to another corner of the room.
+Alice chooses one of the 5 folders with the cyphertexts. The image on top is Alice's message. Then Alice gives all the transparencies in of this folder to one Eve.
+
+Eve gives one transparency to Bob and keeps the rest. Now Bob knows which picture Alice sent, but Eve does not know this.
+
+Give the pile of ``brute force keys'' to one Eve and explain that one of those is the actual key. Tell Eves to try and find the secret message.
+
+Sooner or later someone will announce that they found the secret message. Tell them to try more ``brute force keys'' to see what happens.
+After they see that few shapes come up, it is a good point to discuss why this method of encryption cannot be broken.
+
+After that tell Alice to pick another folder of the 4 that are left. Alice should give all the transparencies with the cyphertext to one Eve. Eve should give one to Bob and keep the rest.
+
+Just like before Bob knows the message. Tell let Eve to try to break the encryption. Wait until someone overlaps the two transparencies. Then discuss why this method is called one-time pad.
+
+
+
+
+
+
+\newpage
+
+
+\thispagestyle{empty}
+\begin{center}
+\label{pg_key_1}
+\Huge\textbf{This is the encryption key. It has to be kept secret at all costs!}
+
+\vspace{5em}
+
+\includegraphics[width=10cm]{pics/key}
+\end{center}
+
+\newpage
+
+\label{pg_key_2}
+\thispagestyle{empty}
+\begin{center}
+\Huge\textbf{This is the encryption key. It has to be kept secret at all costs!}
+
+\vspace{5em}
+
+\includegraphics[width=10cm]{pics/key}
+\end{center}
+
+
+\newpage
+
+\section{Brute force keys}
+\label{ch_BF_keys}
+
+The following pages form the ``brute force keys'' pile.
+
+\newpage
+
+
+\begin{center}
+    \includegraphics[width=10cm]{pics/1}
+\vspace{1em}
+
+\label{pg_BF_keys_start}
+
+    \includegraphics[width=10cm]{pics/2}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/3}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/4}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/5}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/6}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/7}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/8}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/9}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/10}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/11}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/12}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/13}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/14}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/15}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/16}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/17}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/18}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/19}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/20}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/21}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/22}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/23}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/24}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/25}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/26}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/27}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/28}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/29}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/30}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/31}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/32}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/33}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/34}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/35}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/36}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/37}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/38}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/39}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/40}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/41}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/42}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/43}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/44}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/45}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/46}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/47}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/48}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/49}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/50}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/51}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/52}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/53}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/54}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/55}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/56}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/57}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/58}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/59}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/60}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/61}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/62}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/63}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/64}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/65}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/66}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/67}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/68}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/69}
+\vspace{1em}
+
+
+
+    \includegraphics[width=10cm]{pics/70}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/71}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/72}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/73}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/74}
+\vspace{1em}
+
+
+
+
+    \includegraphics[width=10cm]{pics/75}
+\vspace{1em}
+
+
+    \includegraphics[width=10cm]{pics/key}
+    
+    \label{pg_BF_keys_finish}
+
+\end{center}
+
+
+
+\newpage
+
+\section{Cyphertext}
+
+Print the next 5 pages to paper and the 5 after them to transparencies a couple of times. The paper pages should be used to label the transparencies for Alice.
+
+
+
+\newpage
+\label{pg_circle}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/circle}
+\end{center}
+
+\newpage
+\label{pg_cross}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/cross}
+\end{center}
+
+\newpage
+\label{pg_square}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/square}
+\end{center}
+
+\newpage
+\label{pg_triangle}
+
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/triangle}
+\end{center}
+
+
+\newpage
+\label{pg_X}
+\label{pg_last_paper_printed}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/X}
+\end{center}
+
+
+
+\newpage
+\thispagestyle{empty}
+
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/ctcircle}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/ctcross}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/ctsquare}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/cttriangle}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\phantom{a}
+\begin{center}
+\vspace{4cm}
+\includegraphics[width=10cm]{pics/ctX}
+\end{center}
+
+
+% \newpage
+% 
+% \begin{center}
+% \Huge\textbf{This is the encryption key. It has to be kept secret at all costs!}
+% 
+% \vspace{5em}
+% 
+% \includegraphics[width=10cm]{pics/key}
+% \end{center}
+
+
+
+
+\end{document}

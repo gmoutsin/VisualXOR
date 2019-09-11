@@ -1,0 +1,16 @@
+*.aux
+*.bbl
+*.out
+*.backup
+*.blg
+*.pdf
+*.log
+*.toc
+*.tar.gz
+*.kilepr
+*.recover.bak~
+*.synctex.gz
+*.eps
+*.nb
+.directory
+.DS_Store
