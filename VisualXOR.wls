@@ -1,6 +1,9 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
+(****** The present is distributed under GPL v3.0 ******)
+
+
 (* ::Input:: *)
 (*SeedRandom[123]*)
 (*(key=RandomInteger[{0,1},{50,50}]);*)
