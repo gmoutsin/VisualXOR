@@ -12,5 +12,7 @@
 *.synctex.gz
 *.eps
 *.nb
+*.snm
+*.nav
 .directory
 .DS_Store
