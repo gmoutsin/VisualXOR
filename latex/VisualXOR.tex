@@ -12,6 +12,15 @@
     version={3.0},
 ]{doclicense}
 
+\usepackage{xcolor}
+
+
+\definecolor{ceruleanblue}{rgb}{0.16, 0.32, 0.75}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{darkmagenta}{rgb}{0.55, 0.0, 0.55}
+\definecolor{carminered}{rgb}{1.0, 0.0, 0.22}
+
+
 \pdfsuppresswarningpagegroup=1 
 
 %opening
@@ -22,6 +31,9 @@
 
 \setlength\parindent{0pt}
 \setlength\parskip{1em}
+
+\newcommand{\coloredOne}{{\color{carminered} 1}}
+\newcommand{\coloredZero}{{\color{darkcyan} 0}}
 
 \newcommand{\pxWhite}{
  {\mathchoice
@@ -140,21 +152,20 @@ for any $a$ and $b$.
 
 We can use XOR to encrypt a sequence of binary digits in a straightforward way, we just XOR with an other sequence, which we call \textit{key}. In order to decrypt it we just XOR it again with the same key and we get the initial sequence back.
 
-For example let's encrypt the sequence $11001100110011001100$ with our key that we choose to be the sequence $11110100100101011001$:
+For example let's encrypt the word $\coloredOne\coloredOne\coloredZero\coloredZero\coloredOne\coloredOne\coloredZero\coloredZero\coloredOne\coloredOne\coloredZero\coloredZero\coloredOne\coloredOne\coloredZero\coloredZero\coloredOne\coloredOne\coloredZero\coloredZero$ with our key that we choose to be the word $\coloredZero\coloredOne\coloredOne\coloredOne\coloredZero\coloredOne\coloredZero\coloredZero\coloredOne\coloredZero\coloredZero\coloredOne\coloredZero\coloredOne\coloredZero\coloredOne\coloredOne\coloredZero\coloredZero\coloredOne$:
 \begin{equation*}
 \begin{array}{rl}
-  & 1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\\
-+ & 1\,1\,1\,1\,0\,1\,0\,0\,1\,0\,0\,1\,0\,1\,0\,1\,1\,0\,0\,1\\ \hline
-= & 0\,0\,1\,1\,1\,0\,1\,0\,0\,1\,0\,1\,1\,0\,0\,1\,0\,1\,0\,1
+  & \coloredOne \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \\
++ & \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\\ \hline
+= &  \coloredOne \, \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne
 \end{array}
 \end{equation*}
-
 The result of this operation is called cyphertext. Notice that even though the original sequence has a nice pattern, the cyphertext does not have it. This is an essential property, but it will be demonstrated better later. Now we can XOR the cyphertext with the same key and we get back the original message:
 \begin{equation*}
 \begin{array}{rl}
-  & 0\,0\,1\,1\,1\,0\,1\,0\,0\,1\,0\,1\,1\,0\,0\,1\,0\,1\,0\,1 \\
-+ & 1\,1\,1\,1\,0\,1\,0\,0\,1\,0\,0\,1\,0\,1\,0\,1\,1\,0\,0\,1\\ \hline
-= & 1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0\,1\,1\,0\,0
+  & \coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne \\
++ & \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\\ \hline
+= & \coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero
 \end{array}
 \end{equation*}
 

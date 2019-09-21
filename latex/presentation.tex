@@ -1,0 +1,333 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\pgfplotsset{compat=1.11}
+
+
+\definecolor{ceruleanblue}{rgb}{0.16, 0.32, 0.75}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{darkmagenta}{rgb}{0.55, 0.0, 0.55}
+\definecolor{carminered}{rgb}{1.0, 0.0, 0.22}
+
+
+\newcommand{\coloredOne}{{\color{carminered} 1}}
+\newcommand{\coloredZero}{{\color{darkcyan} 0}}
+
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+
+\pdfsuppresswarningpagegroup=1 
+
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+\usepackage[
+    type={CC},
+    modifier={by-nc-sa},
+    version={3.0},
+]{doclicense}
+
+
+\setlength\parindent{0pt}
+\setlength\parskip{1em}
+
+\newcommand{\pxWhite}{
+ {\mathchoice
+  {\includegraphics[height=1.6ex]{pics/PixelWhite}}
+  {\includegraphics[height=1.6ex]{pics/PixelWhite}}
+  {\includegraphics[height=1.2ex]{pics/PixelWhite}}
+  {\includegraphics[height=0.9ex]{pics/PixelWhite}}
+ }
+}
+
+\newcommand{\pxDGrey}{
+ {\mathchoice
+  {\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=1.2ex]{pics/PixelDarkGrey}}
+  {\includegraphics[height=0.9ex]{pics/PixelDarkGrey}}
+ }
+}
+
+\newcommand{\LL}{\mathord{\includegraphics[height=1.6ex]{pics/L}}}
+\newcommand{\RR}{\mathord{\includegraphics[height=1.6ex]{pics/R}}}
+\newcommand{\BB}{\mathord{\includegraphics[height=1.6ex]{pics/B}}}
+
+% \newcommand{\pxWhite}{\mathord{\includegraphics[height=1.6ex]{pics/PixelWhite}}}
+\newcommand{\pxBlack}{\mathord{\includegraphics[height=1.6ex]{pics/PixelBlack}}}
+\newcommand{\pxLGrey}{\mathord{\includegraphics[height=1.6ex]{pics/PixelLightGrey}}}
+% \newcommand{\pxDGrey}{\mathord{\includegraphics[height=1.6ex]{pics/PixelDarkGrey}}}
+
+\newcommand{\smKeyGrey}{\mathord{\includegraphics[height=10ex]{pics/smallKeyGrey}}}
+\newcommand{\smMesGrey}{\mathord{\includegraphics[height=10ex]{pics/smallPlaintextGrey}}}
+\newcommand{\smCyphGrey}{\mathord{\includegraphics[height=10ex]{pics/smallCyphertextGrey}}}
+
+\newcommand{\smKeyBlack}{\mathord{\includegraphics[height=10ex]{pics/smallKeyBlack}}}
+\newcommand{\smMesBlack}{\mathord{\includegraphics[height=10ex]{pics/smallPlaintextBlack}}}
+\newcommand{\smCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/smallCyphertextBlack}}}
+
+\newcommand{\smXORmesGrey}{\mathord{\includegraphics[height=10ex]{pics/smallXOR_Key_Cypher_Grey}}}
+\newcommand{\smXORcyphGrey}{\mathord{\includegraphics[height=10ex]{pics/smallXOR_Key_Text_Grey}}}
+
+
+\newcommand{\smUpKeyBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyBlack}}}
+\newcommand{\smUpMesBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextBlack}}}
+\newcommand{\smUpCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextBlack}}}
+
+
+\newcommand{\smUpKeyColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyColored}}}
+\newcommand{\smUpMesColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextColored}}}
+\newcommand{\smUpCyphColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextColored}}}
+
+
+\newcommand{\smUpKeyOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpKeyOverlay}}}
+\newcommand{\smUpMesOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpPlaintextOverlay}}}
+\newcommand{\smUpCyphOverlay}{\mathord{\includegraphics[height=10ex]{pics/SmallUpCyphertextOverlay}}}
+
+
+\newcommand{\smUpXorCyphColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorCyphertextColored}}}
+\newcommand{\smUpXorMesColored}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorPlaintextColored}}}
+\newcommand{\smUpXorCyphBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorCyphertextBlack}}}
+\newcommand{\smUpXorMesBlack}{\mathord{\includegraphics[height=10ex]{pics/SmallUpXorPlaintextBlack}}}
+
+
+
+\newcommand{\exampleCyphertext}{\mathord{\includegraphics[height=15ex]{pics/exampleCyphertext}}}
+\newcommand{\exampleCyphertextUp}{\mathord{\includegraphics[height=15ex]{pics/exampleCyphertextUp}}}
+\newcommand{\exampleKey}{\mathord{\includegraphics[height=15ex]{pics/exampleKey}}}
+\newcommand{\exampleKeyUp}{\mathord{\includegraphics[height=15ex]{pics/exampleKeyUp}}}
+\newcommand{\examplePlaintext}{\mathord{\includegraphics[height=15ex]{pics/examplePlaintext}}}
+\newcommand{\examplePlaintextUp}{\mathord{\includegraphics[height=15ex]{pics/examplePlaintextUp}}}
+\newcommand{\exampleXorCyphertext}{\mathord{\includegraphics[height=15ex]{pics/exampleXorCyphertext}}}
+\newcommand{\exampleXorPlaintext}{\mathord{\includegraphics[height=15ex]{pics/exampleXorPlaintext}}}
+
+
+
+
+\newcommand{\exampleBadCyphertext}{\mathord{\includegraphics[height=15ex]{pics/exampleBadCyphertext}}}
+\newcommand{\exampleBadCyphertextUp}{\mathord{\includegraphics[height=15ex]{pics/exampleBadCyphertextUp}}}
+\newcommand{\exampleBadKey}{\mathord{\includegraphics[height=15ex]{pics/exampleBadKey}}}
+\newcommand{\exampleBadKeyUp}{\mathord{\includegraphics[height=15ex]{pics/exampleBadKeyUp}}}
+\newcommand{\exampleBadXorCyphertext}{\mathord{\includegraphics[height=15ex]{pics/exampleBadXorPlaintext}}}
+
+
+\title[Your Short Title]{[title placeholder]}
+\author{Giannis Moutsinas}
+% \institute{University of Warwick}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \vfill
+
+{\tiny
+\doclicenseThis
+}
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{[title placeholder]}
+
+
+
+\begin{align*}
+0+0=0\\
+1+0=1\\
+0+1=1\\
+1+1=0
+\end{align*}
+
+\end{frame}
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{rl}
+  & \coloredOne \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \\
++ & \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\\ \hline
+= &  \coloredOne \, \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne\, \coloredZero \,\coloredOne
+\end{array}
+\end{equation*}
+
+\begin{equation*}
+\begin{array}{rl}
+  & \coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne \\
++ & \coloredZero \,\coloredOne\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\\ \hline
+= & \coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+\begin{frame}{[title placeholder]}
+
+\begin{align*}
+ \pxWhite+\pxWhite=\pxWhite \\
+ \pxWhite+\pxBlack=\pxBlack \\
+ \pxBlack+\pxWhite=\pxBlack \\
+ \pxBlack+\pxBlack=\pxWhite
+\end{align*}
+
+\end{frame}
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\pxWhite \mapsto \LL \quad\text{ and }\quad \pxBlack \mapsto \RR.
+\end{equation*}
+
+\begin{equation*}
+\LL \mapsto \pxWhite \quad\text{ and }\quad \RR \mapsto \pxWhite.
+\end{equation*}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccccccccc}
+&&& \pxWhite \mapsto \LL &&&&&& \RR \mapsto \pxWhite & \\
+&&& \pxBlack \mapsto \RR &&&&&& \LL \mapsto \pxWhite & \\ \hline
+\vspace{-0.5em}&&&&&&&&&& \\
+\pxWhite & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \LL & + & \LL &  \Longrightarrow & \LL & \xRightarrow{\hspace*{3em}} & \pxWhite \\
+\pxWhite & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \LL & + & \RR &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \RR & + & \LL &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \RR & + & \RR &  \Longrightarrow & \RR & \xRightarrow{\hspace*{3em}} & \pxWhite
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+Let's do this for pictures with $4\times4$ pixels. We choose our message to be:
+$$ \smMesBlack $$
+and our key to be:
+$$ \smKeyBlack $$
+
+
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\smKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyBlack \vspace{0.5em}\\
+\smMesBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpMesOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpMesBlack \vspace{0.5em} \\
+\smCyphBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphBlack
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\smMesBlack &  & \smKeyBlack & & \smCyphBlack \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpMesBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesBlack \vspace{0.5em} \\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpMesColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesColored
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\smCyphBlack  &  & \smKeyBlack & & \smMesBlack \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpCyphBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpXorCyphBlack \vspace{0.5em} \\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\smUpCyphColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{$\Rightarrow$} & \smUpXorCyphColored
+\end{array}
+\end{equation*}
+
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\examplePlaintext &  & \exampleKey & & \exampleCyphertext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\examplePlaintextUp & \raisebox{7ex}{+} & \exampleKeyUp & \raisebox{7ex}{$\Rightarrow$} & \exampleXorPlaintext
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\exampleCyphertext & & \exampleKey & & \examplePlaintext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\exampleCyphertextUp & \raisebox{7ex}{+} & \exampleKeyUp & \raisebox{7ex}{$\Rightarrow$} & \exampleXorCyphertext
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+
+\begin{frame}{[title placeholder]}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\examplePlaintext &  & \exampleBadKey & & \exampleBadCyphertext \vspace{0.5em}\\
+\Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
+\examplePlaintextUp & \raisebox{7ex}{+} & \exampleBadKeyUp & \raisebox{7ex}{$\Rightarrow$} & \exampleBadXorCyphertext
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+\end{document}
