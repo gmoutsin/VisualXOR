@@ -270,7 +270,8 @@
 (**)
 (*figs=RandomSample[Join[*)
 (*Table[VectorBitmapUp[m],{m,lst}],*)
-(*Flatten[Table[VectorBitmapUp[MyEncrypt[m,k]],{m,othermats},{k,validmatsCTS}]]*)
+(*Flatten[Table[VectorBitmapUp[MyEncrypt[m,k]],{m,othermats},{k,validmatsCTS}]],*)
+(*{VectorBitmapUp[key]}*)
 (*]];*)
 (**)
 
