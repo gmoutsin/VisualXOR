@@ -16,7 +16,7 @@
 
 
 \newcommand{\coloredOne}{{\color{carminered} 1}}
-\newcommand{\coloredZero}{{\color{darkcyan} 0}}
+\newcommand{\coloredZero}{{\color{ceruleanblue} 0}}
 
 %
 % Choose how your presentation looks.
@@ -129,7 +129,14 @@
 \newcommand{\exampleBadXorCyphertext}{\mathord{\includegraphics[height=15ex]{pics/exampleBadXorPlaintext}}}
 
 
-\title[Your Short Title]{[title placeholder]}
+\newcommand{\mesCircle}{\mathord{\includegraphics[height=15ex]{pics/circle}}}
+\newcommand{\mesCross}{\mathord{\includegraphics[height=15ex]{pics/cross}}}
+\newcommand{\mesSquare}{\mathord{\includegraphics[height=15ex]{pics/square}}}
+\newcommand{\mesTriangle}{\mathord{\includegraphics[height=15ex]{pics/triangle}}}
+\newcommand{\mesX}{\mathord{\includegraphics[height=15ex]{pics/X}}}
+
+
+\title[Visual Encryption]{Visual Encryption}
 \author{Giannis Moutsinas}
 % \institute{University of Warwick}
 \date{}
@@ -150,10 +157,9 @@
 %  \tableofcontents
 %\end{frame}
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{XOR operation}
 
-
-
+The exclusive or (XOR) operation:
 \begin{align*}
 0+0=0\\
 1+0=1\\
@@ -163,8 +169,10 @@
 
 \end{frame}
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{XOR encryption}
 
+We can encrypt the message $11001100110011001100$ using the word 
+$01110100100101011001$ as key by performing XOR bitwise.
 \begin{equation*}
 \begin{array}{rl}
   & \coloredOne \,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \,\coloredOne\,\coloredOne\, \coloredZero \, \coloredZero \\
@@ -173,6 +181,8 @@
 \end{array}
 \end{equation*}
 
+\pause
+We can decrypt the message by performing bitwise XOR again.
 \begin{equation*}
 \begin{array}{rl}
   & \coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredOne\,\coloredZero\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne\,\coloredZero\,\coloredOne \\
@@ -185,22 +195,35 @@
 
 \begin{frame}{[title placeholder]}
 
+Our goal is to perform XOR visually using transparencies.
+We can use a black pixel ($\pxBlack$) to represent $1$ and a white pixel ($\pxWhite$) to represent $0$. Then the XOR operation with pixels becomes:
 \begin{align*}
  \pxWhite+\pxWhite=\pxWhite \\
  \pxWhite+\pxBlack=\pxBlack \\
  \pxBlack+\pxWhite=\pxBlack \\
  \pxBlack+\pxBlack=\pxWhite
 \end{align*}
+The first $3$ hold true when we use transparencies, however the last one does not.
 
 \end{frame}
 
 
 \begin{frame}{[title placeholder]}
 
+In order to do that we split each pixel into two. First we transform the pixels according to the following rule:
 \begin{equation*}
-\pxWhite \mapsto \LL \quad\text{ and }\quad \pxBlack \mapsto \RR.
+\pxWhite \mapsto \RR \quad\text{ and }\quad \pxBlack \mapsto \LL.
 \end{equation*}
 
+\pause
+Then we overlay the transparencies:
+\begin{align*}
+\LL + \LL = \LL \quad & \quad \RR + \RR = \RR \\
+\LL + \RR = \pxBlack \quad & \quad \RR + \LL = \pxBlack
+\end{align*}
+
+\pause
+Finally we can get the correct result if we transform the pixels using the following rule:
 \begin{equation*}
 \LL \mapsto \pxWhite \quad\text{ and }\quad \RR \mapsto \pxWhite.
 \end{equation*}
@@ -213,23 +236,23 @@
 
 \begin{frame}{[title placeholder]}
 
+The whole operation:
 \begin{equation*}
 \begin{array}{ccccccccccc}
-&&& \pxWhite \mapsto \LL &&&&&& \RR \mapsto \pxWhite & \\
-&&& \pxBlack \mapsto \RR &&&&&& \LL \mapsto \pxWhite & \\ \hline
+&&& \pxWhite \mapsto \RR &&&&&& \RR \mapsto \pxWhite & \\
+&&& \pxBlack \mapsto \LL &&&&&& \LL \mapsto \pxWhite & \\ \hline
 \vspace{-0.5em}&&&&&&&&&& \\
-\pxWhite & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \LL & + & \LL &  \Longrightarrow & \LL & \xRightarrow{\hspace*{3em}} & \pxWhite \\
-\pxWhite & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \LL & + & \RR &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
-\pxBlack & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \RR & + & \LL &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
-\pxBlack & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \RR & + & \RR &  \Longrightarrow & \RR & \xRightarrow{\hspace*{3em}} & \pxWhite
+\pxWhite & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \RR & + & \RR &  \Longrightarrow & \RR & \xRightarrow{\hspace*{3em}} & \pxWhite \\
+\pxWhite & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \RR & + & \LL &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxWhite & \xRightarrow{\hspace*{3em}} & \LL & + & \RR &  \Longrightarrow & \BB & \xRightarrow{\hspace*{3em}} & \pxBlack \\
+\pxBlack & + & \pxBlack & \xRightarrow{\hspace*{3em}} & \LL & + & \LL &  \Longrightarrow & \RR & \xRightarrow{\hspace*{3em}} & \pxWhite
 \end{array}
 \end{equation*}
-
 \end{frame}
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Example}
 
 Let's do this for pictures with $4\times4$ pixels. We choose our message to be:
 $$ \smMesBlack $$
@@ -242,37 +265,53 @@ $$ \smKeyBlack $$
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Example: Encryption}
 
+We change the message and the key according to the rule
+\begin{equation*}
+\pxWhite \mapsto \RR \quad\text{ and }\quad \pxBlack \mapsto \LL.
+\end{equation*}
 \begin{equation*}
 \begin{array}{ccccc}
 \smKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpKeyBlack \vspace{0.5em}\\
 \smMesBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpMesOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpMesBlack \vspace{0.5em} \\
-\smCyphBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphBlack
+% \smCyphBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphBlack
 \end{array}
 \end{equation*}
-
 \end{frame}
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Example: Encryption}
 
 \begin{equation*}
 \begin{array}{ccccc}
-\smMesBlack &  & \smKeyBlack & & \smCyphBlack \vspace{0.5em}\\
+\smMesBlack & \raisebox{4ex}{+} & \smKeyBlack & \raisebox{4ex}{=} & \smCyphBlack \vspace{0.5em}\\
 \Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
-\smUpMesBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesBlack \vspace{0.5em} \\
+\smUpMesBlack & \raisebox{4ex}{+} & \smUpKeyBlack & \raisebox{4ex}{=} & \smUpXorMesBlack \vspace{0.5em} \\
 \Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
-\smUpMesColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{$\Rightarrow$} & \smUpXorMesColored
+\smUpMesColored & \raisebox{4ex}{+} & \smUpKeyColored & \raisebox{4ex}{=} & \smUpXorMesColored
 \end{array}
 \end{equation*}
 
 \end{frame}
 
+\begin{frame}{Example: Decryption}
+
+We change the cyphertext and the key accoding to our rule
+\begin{equation*}
+\pxWhite \mapsto \RR \quad\text{ and }\quad \pxBlack \mapsto \LL.
+\end{equation*}
+\begin{equation*}
+\begin{array}{ccccc}
+\smCyphBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpCyphBlack\\
+\smMesBlack & \raisebox{4ex}{$\Rightarrow$} & \smUpMesOverlay & \raisebox{4ex}{$\Rightarrow$} & \smUpMesBlack \vspace{0.5em}
+\end{array}
+\end{equation*}
+\end{frame}
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Example: Decryption}
 
 \begin{equation*}
 \begin{array}{ccccc}
@@ -289,7 +328,7 @@ $$ \smKeyBlack $$
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Big example: Encryption}
 
 \begin{equation*}
 \begin{array}{ccccc}
@@ -303,7 +342,7 @@ $$ \smKeyBlack $$
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Big example: Decryption}
 
 \begin{equation*}
 \begin{array}{ccccc}
@@ -317,13 +356,30 @@ $$ \smKeyBlack $$
 
 
 
-\begin{frame}{[title placeholder]}
+\begin{frame}{Dig example: Bad key}
 
 \begin{equation*}
 \begin{array}{ccccc}
 \examplePlaintext &  & \exampleBadKey & & \exampleBadCyphertext \vspace{0.5em}\\
 \Downarrow &  & \Downarrow& & \Uparrow \vspace{0.5em}\\
 \examplePlaintextUp & \raisebox{7ex}{+} & \exampleBadKeyUp & \raisebox{7ex}{$\Rightarrow$} & \exampleBadXorCyphertext
+\end{array}
+\end{equation*}
+
+\end{frame}
+
+
+\begin{frame}{Possible messages}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\mesCircle &  & \mesCross & & \mesSquare
+\end{array}
+\end{equation*}
+
+\begin{equation*}
+\begin{array}{ccccc}
+\mesTriangle &  & \mesX
 \end{array}
 \end{equation*}
 
