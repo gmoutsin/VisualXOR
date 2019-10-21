@@ -280,3 +280,6 @@
 (*Do[*)
 (*ExportPDF[figs[[i]],ToString[i]]*)
 (*,{i,1,Length[figs]}]*)
+
+
+Table[If[RandomReal[]<Abs[Mod[i,10]-5]/5,1,0],{i,50},{j,50}]
